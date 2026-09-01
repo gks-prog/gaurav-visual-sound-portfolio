@@ -2,66 +2,38 @@ import "./portfolio.js";
 
 (() => {
   const config = window.PORTFOLIO_CONFIG;
-  const grid = document.querySelector("#project-grid");
   const mediaGrid = document.querySelector("#media-grid");
   const projectDialog = document.querySelector("#project-dialog");
   const contactDialog = document.querySelector("#contact-dialog");
   const toast = document.querySelector("[data-toast]");
-  let activeFilter = "all";
 
   const escapeHtml = (value = "") =>
     value.replace(/[&<>'"]/g, (char) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
     })[char]);
 
-  const projectMarkup = (project, index) => `
-    <article class="project-card reveal" data-category="${project.category.join(" ")}" style="--accent:${project.accent}">
-      <button type="button" data-project="${index}" aria-label="Open ${escapeHtml(project.title)} project">
-        <div class="project-cover cover-${project.cover}">
-          <span class="cover-index">${String(index + 1).padStart(2, "0")}</span>
-          <div class="cover-art" aria-hidden="true"><i></i><i></i><i></i></div>
-          <span class="cover-client">${escapeHtml(project.client)}</span>
-          <span class="view-cue">View case ↗</span>
-        </div>
-        <div class="project-info">
-          <div><h3>${escapeHtml(project.title)}</h3><p>${escapeHtml(project.discipline)}</p></div>
-          <span>${escapeHtml(project.year)}</span>
-        </div>
-      </button>
+  const archiveMarkup = (item, index) => {
+    const preview = toEmbed(item.mediaUrl);
+    return `
+    <article class="media-card reveal">
+      <div class="media-preview">
+        ${preview?.type === "iframe" ? `<iframe data-preview-src="${escapeHtml(preview.src)}" title="${escapeHtml(item.client)} ${escapeHtml(item.format)} thumbnail" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>` : ""}
+        <span class="preview-loading" aria-hidden="true">Loading preview</span>
+        <button type="button" data-archive="${index}" aria-label="Play ${escapeHtml(item.client)} ${escapeHtml(item.format)} inside the portfolio">
+          <span>${item.format === "Reel" ? "▶ Play" : "▦ View"}</span>
+        </button>
+      </div>
+      <div class="media-info">
+        <span>${escapeHtml(item.client)}</span>
+        <span>${escapeHtml(item.format)}</span>
+      </div>
     </article>`;
-
-  function renderProjects() {
-    grid.innerHTML = config.projects.map(projectMarkup).join("");
-    applyFilter();
-    observeReveals();
-  }
-
-  const archiveMarkup = (item, index) => `
-    <article class="media-card reveal" style="--media-index:${index}">
-      <button type="button" data-archive="${index}" aria-label="Play ${escapeHtml(item.title)} inside the portfolio">
-        <div class="media-poster" aria-hidden="true">
-          <span class="media-number">${String(index + 1).padStart(2, "0")}</span>
-          <span class="media-glyph">${item.format === "Reel" ? "▶" : "▦"}</span>
-          <strong>${escapeHtml(item.client)}</strong>
-          <i></i><i></i>
-        </div>
-        <div class="media-info">
-          <span>${escapeHtml(item.title)}</span>
-          <span>${escapeHtml(item.format)}</span>
-        </div>
-      </button>
-    </article>`;
+  };
 
   function renderArchive() {
     mediaGrid.innerHTML = config.mediaArchive.map(archiveMarkup).join("");
+    observePreviews();
     observeReveals();
-  }
-
-  function applyFilter() {
-    document.querySelectorAll(".project-card").forEach((card) => {
-      const visible = activeFilter === "all" || card.dataset.category.split(" ").includes(activeFilter);
-      card.hidden = !visible;
-    });
   }
 
   function toEmbed(url) {
@@ -88,31 +60,6 @@ import "./portfolio.js";
     return null;
   }
 
-  function openProject(index) {
-    const project = config.projects[index];
-    const embed = toEmbed(project.mediaUrl);
-    const media = projectDialog.querySelector("[data-dialog-media]");
-    media.className = `dialog-media cover-${project.cover}`;
-    media.style.setProperty("--accent", project.accent);
-    media.innerHTML = embed
-      ? embed.type === "iframe"
-        ? `<iframe src="${escapeHtml(embed.src)}" title="${escapeHtml(project.title)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`
-        : embed.type === "video"
-          ? `<video src="${escapeHtml(embed.src)}" controls playsinline></video>`
-          : `<img src="${escapeHtml(embed.src)}" alt="${escapeHtml(project.title)}" />`
-      : `<div class="dialog-placeholder"><span>${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(project.client)}</strong><small>Add the live media URL in portfolio.js</small></div>`;
-
-    projectDialog.querySelector("[data-dialog-index]").textContent = `${String(index + 1).padStart(2, "0")} / ${project.category.join(" · ")}`;
-    projectDialog.querySelector("[data-dialog-title]").textContent = project.title;
-    projectDialog.querySelector("[data-dialog-description]").textContent = project.description;
-    projectDialog.querySelector("[data-dialog-details]").innerHTML = `
-      <div><dt>Client</dt><dd>${escapeHtml(project.client)}</dd></div>
-      <div><dt>Contribution</dt><dd>${escapeHtml(project.contribution)}</dd></div>
-      <div><dt>Year</dt><dd>${escapeHtml(project.year)}</dd></div>`;
-    projectDialog.showModal();
-    document.body.classList.add("modal-open");
-  }
-
   function openArchive(index) {
     const item = config.mediaArchive[index];
     const embed = toEmbed(item.mediaUrl);
@@ -121,35 +68,39 @@ import "./portfolio.js";
     media.innerHTML = embed
       ? `<iframe src="${escapeHtml(embed.src)}" title="${escapeHtml(item.title)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
       : `<div class="dialog-placeholder"><strong>Media unavailable</strong></div>`;
-    projectDialog.querySelector("[data-dialog-index]").textContent = `${String(index + 1).padStart(2, "0")} / Live work archive`;
-    projectDialog.querySelector("[data-dialog-title]").textContent = item.title;
+    const platform = item.mediaUrl.includes("drive.google.com") ? "Google Drive" : "Instagram";
+    projectDialog.querySelector("[data-dialog-index]").textContent = "Project / On-page playback";
+    projectDialog.querySelector("[data-dialog-title]").textContent = `${item.client} / ${item.format}`;
     projectDialog.querySelector("[data-dialog-description]").textContent =
       "Published social content embedded directly inside this portfolio.";
     projectDialog.querySelector("[data-dialog-details]").innerHTML = `
       <div><dt>Client</dt><dd>${escapeHtml(item.client)}</dd></div>
       <div><dt>Format</dt><dd>${escapeHtml(item.format)}</dd></div>
-      <div><dt>Playback</dt><dd>On-page Instagram embed</dd></div>`;
+      <div><dt>Playback</dt><dd>On-page ${platform} embed</dd></div>`;
     projectDialog.showModal();
     document.body.classList.add("modal-open");
   }
-
-  grid.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-project]");
-    if (button) openProject(Number(button.dataset.project));
-  });
 
   mediaGrid.addEventListener("click", (event) => {
     const button = event.target.closest("[data-archive]");
     if (button) openArchive(Number(button.dataset.archive));
   });
 
-  document.querySelectorAll(".filter").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeFilter = button.dataset.filter;
-      document.querySelectorAll(".filter").forEach((item) => item.classList.toggle("active", item === button));
-      applyFilter();
-    });
-  });
+  let previewObserver;
+  function observePreviews() {
+    if (!previewObserver) {
+      previewObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const frame = entry.target;
+          frame.src = frame.dataset.previewSrc;
+          frame.addEventListener("load", () => frame.closest(".media-preview")?.classList.add("loaded"), { once: true });
+          previewObserver.unobserve(frame);
+        });
+      }, { rootMargin: "400px 0px" });
+    }
+    document.querySelectorAll("iframe[data-preview-src]").forEach((frame) => previewObserver.observe(frame));
+  }
 
   document.querySelectorAll(".dialog-close").forEach((button) => {
     button.addEventListener("click", () => button.closest("dialog").close());
@@ -167,12 +118,14 @@ import "./portfolio.js";
 
   function setContact() {
     const socials = [
+      config.whatsappNumber && `<a href="https://wa.me/${escapeHtml(config.whatsappNumber.replace(/\D/g, ""))}" target="_blank" rel="noreferrer">WhatsApp ↗</a>`,
       config.instagram && `<a href="${escapeHtml(config.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>`,
       config.linkedin && `<a href="${escapeHtml(config.linkedin)}" target="_blank" rel="noreferrer">LinkedIn ↗</a>`,
     ].filter(Boolean);
     document.querySelector("[data-socials]").innerHTML = socials.length ? socials.join("") : "Visual × Sound × AI";
 
     const actions = [
+      config.whatsappNumber && `<a class="primary" href="https://wa.me/${escapeHtml(config.whatsappNumber.replace(/\D/g, ""))}" target="_blank" rel="noreferrer">WhatsApp ${escapeHtml(config.whatsappDisplay)} ↗</a>`,
       config.email && `<a class="primary" href="mailto:${escapeHtml(config.email)}?subject=Project%20enquiry">Email me ↗</a>`,
       config.instagram && `<a href="${escapeHtml(config.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>`,
       config.linkedin && `<a href="${escapeHtml(config.linkedin)}" target="_blank" rel="noreferrer">LinkedIn ↗</a>`,
@@ -269,7 +222,6 @@ import "./portfolio.js";
     draw();
   }
 
-  renderProjects();
   renderArchive();
   setContact();
   observeReveals();
