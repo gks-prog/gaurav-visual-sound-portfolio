@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0b0b" />
+    <meta
+      name="description"
+      content="Portfolio of Gaurav Sharma — cinematography, music, fashion content and AI-assisted visual direction."
+    />
+    <meta property="og:title" content="Gaurav Sharma — Visual × Sound" />
+    <meta property="og:description" content="Cinematic ideas built where image, rhythm and new tools meet." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Gaurav Sharma — Visual × Sound</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Gaurav Sharma",
+        "alternateName": "Wenon",
+        "jobTitle": "Creative Director, Cinematographer and Music Producer",
+        "knowsAbout": [
+          "Cinematography",
+          "Music Production",
+          "AI-assisted Content Creation",
+          "Fashion Content",
+          "Sound Design"
+        ]
+      }
+    </script>
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"></div>
+    <a class="skip-link" href="#work">Skip to selected work</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="Gaurav Sharma home">
+        <span class="brand-mark">GS</span>
+        <span class="brand-copy">Visual × Sound<br />New Delhi</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#work">Work</a>
+        <a href="#about">Profile</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-kicker reveal">
+          <span>Creative direction · Cinematography · Music</span>
+          <span>Portfolio / 2026</span>
+        </div>
+        <h1 id="hero-title" class="hero-title" aria-label="I direct attention. I score emotion.">
+          <span class="line reveal"><span>I DIRECT</span></span>
+          <span class="line reveal"><span>ATTENTION.</span></span>
+          <span class="line reveal outline"><span>I SCORE EMOTION.</span></span>
+        </h1>
+        <div class="hero-bottom reveal">
+          <p>
+            I build culture-facing content where <strong>image, rhythm</strong> and
+            <strong>AI-assisted craft</strong> work as one system.
+          </p>
+          <a class="round-link magnetic" href="#work" aria-label="Explore selected work">
+            <span>Explore<br />work</span>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4v23M7 18l9 9 9-9" /></svg>
+          </a>
+        </div>
+        <div class="signal-stage" aria-hidden="true">
+          <canvas id="signal-canvas"></canvas>
+          <div class="signal-label"><span>01</span> AUDIO / IMAGE / INTELLIGENCE</div>
+        </div>
+      </section>
+
+      <section class="marquee" aria-label="Capabilities">
+        <div class="marquee-track">
+          <span>CINEMATOGRAPHY</span><i>✦</i><span>MUSIC PRODUCTION</span><i>✦</i>
+          <span>FASHION CONTENT</span><i>✦</i><span>AI VISUALS</span><i>✦</i>
+          <span>CINEMATOGRAPHY</span><i>✦</i><span>MUSIC PRODUCTION</span><i>✦</i>
+          <span>FASHION CONTENT</span><i>✦</i><span>AI VISUALS</span><i>✦</i>
+        </div>
+      </section>
+
+      <section class="work section-pad" id="work" aria-labelledby="work-title">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">01 / Selected work</span>
+            <h2 id="work-title">Ideas with<br /><em>a pulse.</em></h2>
+          </div>
+          <p>Brand films, social-first stories, sound-led experiments and AI-assisted visual systems.</p>
+        </div>
+
+        <div class="filter-bar reveal" role="group" aria-label="Filter projects">
+          <button class="filter active" type="button" data-filter="all">All <sup>06</sup></button>
+          <button class="filter" type="button" data-filter="fashion">Fashion</button>
+          <button class="filter" type="button" data-filter="film">Film</button>
+          <button class="filter" type="button" data-filter="music">Music</button>
+          <button class="filter" type="button" data-filter="ai">AI</button>
+        </div>
+
+        <div class="project-grid" id="project-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="sanki-study" aria-labelledby="sanki-title">
+        <div class="sanki-pin">
+          <div class="sanki-meta reveal">
+            <span class="eyebrow">Focused case / Sanki</span>
+            <span>Clothing brand · Social content</span>
+          </div>
+          <div class="sanki-grid">
+            <div class="sanki-copy reveal">
+              <h2 id="sanki-title">Streetwear<br />needed <em>movement,</em><br />not decoration.</h2>
+              <p>
+                At Sanki, I worked across content thinking and execution—using framing, pace,
+                music and format-awareness to make clothing feel native to the feed without
+                flattening the brand into trends.
+              </p>
+              <div class="role-list">
+                <span>Content strategy</span><span>Visual ideation</span><span>Short-form direction</span>
+                <span>Music & edit sense</span>
+              </div>
+            </div>
+            <div class="sanki-visual reveal" aria-hidden="true">
+              <div class="poster poster-a"><b>SANKI</b><span>DON'T FIT IN.</span></div>
+              <div class="poster poster-b"><b>01:09</b><span>FRAME / CUT / REPEAT</span></div>
+              <div class="poster poster-c"><div class="target"></div><span>IDEA → IMPACT</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="method section-pad" aria-labelledby="method-title">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">02 / Method</span>
+            <h2 id="method-title">One idea.<br /><em>Four lenses.</em></h2>
+          </div>
+          <p>The output changes. The question stays the same: what should the audience feel next?</p>
+        </div>
+        <div class="method-list">
+          <article class="method-row reveal"><span>01</span><h3>Observe</h3><p>Find the human tension before opening the software.</p><b>Insight</b></article>
+          <article class="method-row reveal"><span>02</span><h3>Frame</h3><p>Build a visual rule the whole piece can obey.</p><b>Direction</b></article>
+          <article class="method-row reveal"><span>03</span><h3>Score</h3><p>Use rhythm and sound to control attention—not fill silence.</p><b>Emotion</b></article>
+          <article class="method-row reveal"><span>04</span><h3>Multiply</h3><p>Use AI where it expands the idea, never where it erases taste.</p><b>Scale</b></article>
+        </div>
+      </section>
+
+      <section class="about section-pad" id="about" aria-labelledby="about-title">
+        <div class="about-index"><span class="eyebrow">03 / Profile</span><span>(New Delhi, India)</span></div>
+        <div class="about-grid">
+          <h2 id="about-title" class="reveal">A visual thinker<br />with <em>an ear.</em></h2>
+          <div class="about-copy reveal">
+            <p class="large">
+              I’m Gaurav Sharma—also working in music as <strong>Wenon</strong>. My advantage is
+              not a single tool. It’s understanding how a frame, a cut and a frequency change
+              the same emotion.
+            </p>
+            <p>
+              My practice crosses cinematography, music production, social-first brand content
+              and AI-assisted generation. I’m interested in work that feels culturally aware,
+              technically controlled and impossible to scroll past for the right reasons.
+            </p>
+            <div class="skill-columns">
+              <div><span>Direction</span><p>Concept development<br />Shot design<br />Visual storytelling</p></div>
+              <div><span>Sound</span><p>Music production<br />Mix & master<br />Sonic identity</p></div>
+              <div><span>Systems</span><p>AI workflows<br />Content strategy<br />Rapid prototyping</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="contact-top">
+          <span class="eyebrow">04 / Start something</span>
+          <span>Available for selected collaborations</span>
+        </div>
+        <h2 id="contact-title">HAVE AN IDEA<br /><em>WITH TEETH?</em></h2>
+        <button class="contact-cta magnetic" type="button" data-contact>
+          <span>Let's build it</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </button>
+        <div class="contact-foot">
+          <span>© <span data-year></span> Gaurav Sharma</span>
+          <div data-socials></div>
+          <button type="button" data-top>Back to top ↑</button>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="project-dialog" id="project-dialog">
+      <button class="dialog-close" type="button" aria-label="Close project">Close ×</button>
+      <div class="dialog-layout">
+        <div class="dialog-media" data-dialog-media></div>
+        <div class="dialog-copy">
+          <span class="eyebrow" data-dialog-index></span>
+          <h2 data-dialog-title></h2>
+          <p data-dialog-description></p>
+          <dl data-dialog-details></dl>
+          <a class="dialog-link" data-dialog-link target="_blank" rel="noreferrer">View original ↗</a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="contact-dialog" id="contact-dialog">
+      <button class="dialog-close" type="button" aria-label="Close contact panel">Close ×</button>
+      <div class="contact-dialog-inner">
+        <span class="eyebrow">New project / Collaboration</span>
+        <h2>Make the first<br />message <em>useful.</em></h2>
+        <p>Include the brand, deliverables, deadline and budget range. Clear briefs make better work.</p>
+        <div class="contact-actions" data-contact-actions></div>
+      </div>
+    </dialog>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+  </body>
+</html>
