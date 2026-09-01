@@ -3,6 +3,7 @@ import "./portfolio.js";
 (() => {
   const config = window.PORTFOLIO_CONFIG;
   const grid = document.querySelector("#project-grid");
+  const mediaGrid = document.querySelector("#media-grid");
   const projectDialog = document.querySelector("#project-dialog");
   const contactDialog = document.querySelector("#contact-dialog");
   const toast = document.querySelector("[data-toast]");
@@ -32,6 +33,27 @@ import "./portfolio.js";
   function renderProjects() {
     grid.innerHTML = config.projects.map(projectMarkup).join("");
     applyFilter();
+    observeReveals();
+  }
+
+  const archiveMarkup = (item, index) => `
+    <article class="media-card reveal" style="--media-index:${index}">
+      <button type="button" data-archive="${index}" aria-label="Play ${escapeHtml(item.title)} inside the portfolio">
+        <div class="media-poster" aria-hidden="true">
+          <span class="media-number">${String(index + 1).padStart(2, "0")}</span>
+          <span class="media-glyph">${item.format === "Reel" ? "▶" : "▦"}</span>
+          <strong>${escapeHtml(item.client)}</strong>
+          <i></i><i></i>
+        </div>
+        <div class="media-info">
+          <span>${escapeHtml(item.title)}</span>
+          <span>${escapeHtml(item.format)}</span>
+        </div>
+      </button>
+    </article>`;
+
+  function renderArchive() {
+    mediaGrid.innerHTML = config.mediaArchive.map(archiveMarkup).join("");
     observeReveals();
   }
 
@@ -87,9 +109,26 @@ import "./portfolio.js";
       <div><dt>Client</dt><dd>${escapeHtml(project.client)}</dd></div>
       <div><dt>Contribution</dt><dd>${escapeHtml(project.contribution)}</dd></div>
       <div><dt>Year</dt><dd>${escapeHtml(project.year)}</dd></div>`;
-    const original = projectDialog.querySelector("[data-dialog-link]");
-    original.hidden = !project.mediaUrl;
-    if (project.mediaUrl) original.href = project.mediaUrl;
+    projectDialog.showModal();
+    document.body.classList.add("modal-open");
+  }
+
+  function openArchive(index) {
+    const item = config.mediaArchive[index];
+    const embed = toEmbed(item.mediaUrl);
+    const media = projectDialog.querySelector("[data-dialog-media]");
+    media.className = "dialog-media archive-player";
+    media.innerHTML = embed
+      ? `<iframe src="${escapeHtml(embed.src)}" title="${escapeHtml(item.title)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+      : `<div class="dialog-placeholder"><strong>Media unavailable</strong></div>`;
+    projectDialog.querySelector("[data-dialog-index]").textContent = `${String(index + 1).padStart(2, "0")} / Live work archive`;
+    projectDialog.querySelector("[data-dialog-title]").textContent = item.title;
+    projectDialog.querySelector("[data-dialog-description]").textContent =
+      "Published social content embedded directly inside this portfolio.";
+    projectDialog.querySelector("[data-dialog-details]").innerHTML = `
+      <div><dt>Client</dt><dd>${escapeHtml(item.client)}</dd></div>
+      <div><dt>Format</dt><dd>${escapeHtml(item.format)}</dd></div>
+      <div><dt>Playback</dt><dd>On-page Instagram embed</dd></div>`;
     projectDialog.showModal();
     document.body.classList.add("modal-open");
   }
@@ -97,6 +136,11 @@ import "./portfolio.js";
   grid.addEventListener("click", (event) => {
     const button = event.target.closest("[data-project]");
     if (button) openProject(Number(button.dataset.project));
+  });
+
+  mediaGrid.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-archive]");
+    if (button) openArchive(Number(button.dataset.archive));
   });
 
   document.querySelectorAll(".filter").forEach((button) => {
@@ -114,7 +158,11 @@ import "./portfolio.js";
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
     });
-    dialog.addEventListener("close", () => document.body.classList.remove("modal-open"));
+    dialog.addEventListener("close", () => {
+      document.body.classList.remove("modal-open");
+      const media = dialog.querySelector("[data-dialog-media]");
+      if (media) media.innerHTML = "";
+    });
   });
 
   function setContact() {
@@ -222,6 +270,7 @@ import "./portfolio.js";
   }
 
   renderProjects();
+  renderArchive();
   setContact();
   observeReveals();
   initSignal();

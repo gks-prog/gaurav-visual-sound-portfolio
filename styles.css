@@ -121,6 +121,30 @@ em { color: var(--acid); font-style: normal; }
 .project-info h3 { margin: 0 0 .35rem; font: 600 clamp(1.2rem,2vw,1.7rem) "Syne"; }
 .project-info p, .project-info > span { margin: 0; color: var(--muted); font: .65rem "DM Mono"; text-transform: uppercase; }
 
+.archive-head { display: grid; grid-template-columns: 1.4fr .6fr; gap: 2rem; align-items: end; margin: clamp(7rem,12vw,12rem) 0 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+.archive-head h3 { margin: 1rem 0 0; font: 700 clamp(2.6rem,6vw,6rem)/.88 "Syne"; letter-spacing: -.06em; text-transform: uppercase; }
+.archive-head p { max-width: 30rem; justify-self: end; margin: 0; color: var(--muted); line-height: 1.6; }
+.media-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+.media-card button { display: block; width: 100%; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; }
+.media-poster { position: relative; overflow: hidden; aspect-ratio: 3/4; padding: 1rem; color: var(--ink); background: var(--acid); transition: transform .35s cubic-bezier(.2,.8,.2,1), filter .35s; }
+.media-card:nth-child(4n+2) .media-poster { background: #7057ff; }
+.media-card:nth-child(4n+3) .media-poster { background: #ff5c35; }
+.media-card:nth-child(4n+4) .media-poster { background: #7de8ff; }
+.media-card:nth-child(6n) .media-poster { color: var(--paper); background: #222; }
+.media-card button:hover .media-poster { transform: translateY(-.4rem); filter: saturate(1.12); }
+.media-poster::before { content: ""; position: absolute; width: 72%; aspect-ratio: 1; left: 14%; top: 20%; border: 1px solid currentColor; border-radius: 50%; box-shadow: inset 0 0 0 1.7rem transparent, inset 0 0 0 calc(1.7rem + 1px) currentColor; opacity: .7; }
+.media-poster::after { content: "PLAY IN FRAME"; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(-45deg); white-space: nowrap; font: 700 clamp(1rem,1.8vw,1.7rem) "Syne"; letter-spacing: -.03em; }
+.media-number, .media-glyph, .media-poster strong { position: absolute; z-index: 2; font: 500 .62rem "DM Mono"; text-transform: uppercase; letter-spacing: .08em; }
+.media-number { top: 1rem; left: 1rem; }
+.media-glyph { top: 1rem; right: 1rem; }
+.media-poster strong { left: 1rem; bottom: 1rem; }
+.media-poster i { position: absolute; display: block; height: 1px; width: 150%; left: -25%; top: 50%; background: currentColor; opacity: .42; transform: rotate(45deg); }
+.media-poster i:last-child { transform: rotate(-45deg); }
+.media-info { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 0 1.5rem; border-bottom: 1px solid var(--line); font: .62rem "DM Mono"; text-transform: uppercase; }
+.media-info span:last-child { color: var(--muted); }
+.archive-player { display: grid; place-items: center; background: #050505; }
+.archive-player iframe { width: min(100%, 34rem); height: 100%; background: white; }
+
 .sanki-study { min-height: 100vh; padding: var(--pad); color: var(--ink); background: var(--acid); }
 .sanki-pin { padding: 2rem 0; }
 .sanki-meta { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,.35); padding-bottom: 1rem; }
@@ -215,6 +239,9 @@ dialog::backdrop { background: rgba(0,0,0,.8); backdrop-filter: blur(10px); }
   .menu-open .menu-toggle span:last-child { transform: translateY(-.35rem) rotate(-45deg); }
   .signal-stage { width: 60vw; right: -5%; opacity: .55; }
   .section-head, .sanki-grid, .about-grid, .dialog-layout { grid-template-columns: 1fr; }
+  .archive-head { grid-template-columns: 1fr; }
+  .archive-head p { justify-self: start; }
+  .media-grid { grid-template-columns: repeat(3,1fr); }
   .section-head > p { justify-self: start; }
   .project-card, .project-card:nth-child(3n) { grid-column: span 6; }
   .project-card:nth-child(3n+2) { margin-top: 4rem; }
@@ -236,6 +263,7 @@ dialog::backdrop { background: rgba(0,0,0,.8); backdrop-filter: blur(10px); }
   .signal-stage { top: 18%; width: 95vw; height: 32%; right: -20%; }
   .section-head { margin-bottom: 3rem; }
   .project-grid { display: block; }
+  .media-grid { grid-template-columns: repeat(2,1fr); }
   .project-card, .project-card:nth-child(3n+2) { margin: 0 0 3rem; }
   .project-card:nth-child(3n) .project-cover { aspect-ratio: 4/5; }
   .method-row { grid-template-columns: 2rem 1fr auto; gap: .8rem; }

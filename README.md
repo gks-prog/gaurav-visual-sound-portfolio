@@ -15,6 +15,10 @@ The project modal automatically converts supported links into an embedded player
 
 At the top of `portfolio.js`, add your `email`, `instagram`, `linkedin` and optional `showreel` links. Blank links remain hidden rather than rendering broken buttons.
 
+The `mediaArchive` array powers the live-work gallery. Instagram and Drive items are loaded only
+when selected, keeping the first page fast even with a large body of work. Playback stays inside
+the portfolio dialog; no external-view CTA is rendered.
+
 ## Run locally
 
 ```bash
